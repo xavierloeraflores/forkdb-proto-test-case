@@ -1,0 +1,3 @@
+CREATE TYPE "Priority" AS ENUM ('LOW', 'MEDIUM', 'HIGH');
+
+ALTER TABLE "tasks" ADD COLUMN "priority" "Priority" NOT NULL DEFAULT 'MEDIUM';

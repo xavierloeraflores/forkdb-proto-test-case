@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@/generated/prisma/client";
+import { Prisma, Priority } from "@/generated/prisma/client";
 import { getPrisma } from "@/lib/prisma";
 
 type Result = { ok: true } | { ok: false; error: string };
@@ -43,4 +43,10 @@ export async function updateTask(id: string, name: string): Promise<Result> {
 export async function deleteTask(id: string): Promise<Result> {
   if (!validId(id)) return { ok: false, error: "Invalid task ID." };
   return mutate(() => getPrisma().task.delete({ where: { id } }));
+}
+
+export async function setTaskPriority(id: string, priority: Priority): Promise<Result> {
+  if (!validId(id)) return { ok: false, error: "Invalid task ID." };
+  if (!Object.values(Priority).includes(priority)) return { ok: false, error: "Choose Low, Medium, or High priority." };
+  return mutate(() => getPrisma().task.update({ where: { id }, data: { priority } }));
 }

@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { createTask, deleteTask, updateTask } from "./actions";
+import { createTask, deleteTask, updateTask, setTaskPriority } from "./actions";
 
-type Task = { id: string; name: string; createdAt: string };
+type Priority = "LOW" | "MEDIUM" | "HIGH";
+type Task = { id: string; name: string; createdAt: string; priority: Priority };
+const priorityLabels: Record<Priority, string> = { LOW: "Low", MEDIUM: "Medium", HIGH: "High" };
 type Result = { ok: true } | { ok: false; error: string };
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
@@ -47,6 +49,14 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
 
   return (
     <>
+      <div className="priority-summary" aria-label="Priority counts">
+        {(["HIGH", "MEDIUM", "LOW"] as const).map((priority) => (
+          <div className={`summary-item priority-${priority.toLowerCase()}`} key={priority}>
+            <span className="summary-count">{tasks.filter((task) => task.priority === priority).length}</span>
+            <span>{priorityLabels[priority]} priority</span>
+          </div>
+        ))}
+      </div>
       <section className="card" aria-label="Task list" aria-busy={pending}>
         <form className="add-form" ref={addForm} onSubmit={add}>
           <label htmlFor="task-name">What&apos;s next?</label>
@@ -83,9 +93,21 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
                   <>
                     <div className="task-content">
                       <h3>{task.name}</h3>
+                      <span className={`priority-badge priority-${task.priority.toLowerCase()}`}>{priorityLabels[task.priority]}</span>
                       <time dateTime={task.createdAt} title={task.createdAt}>Created {dateFormat.format(new Date(task.createdAt))}</time>
                     </div>
                     <div className="row-actions">
+                      <select
+                        className="priority-select"
+                        aria-label={`Priority for ${task.name}`}
+                        value={task.priority}
+                        disabled={pending}
+                        onChange={(event) => run(() => setTaskPriority(task.id, event.target.value as Priority), () => {}, "Priority saved.")}
+                      >
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HIGH">High</option>
+                      </select>
                       {deletingId === task.id ? (
                         <>
                           <span className="delete-prompt">Delete task?</span>

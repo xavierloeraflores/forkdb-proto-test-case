@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Tasks",
-  description: "A simple shared to-do list.",
+  title: "Priority fork | ForkDB",
+  description: "Prioritize your tasks with Low, Medium, and High priority.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -12,9 +12,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <main className="workspace">
           <header className="page-header">
-            <span className="eyebrow">TO-DO LIST</span>
-            <h1>Tasks</h1>
-            <p>A little less to keep in your head.</p>
+            <span className="eyebrow">FORKDB / PRIORITY</span>
+            <h1>Priority fork</h1>
+            <p>Choose what needs your attention first.</p>
           </header>
           {children}
         </main>

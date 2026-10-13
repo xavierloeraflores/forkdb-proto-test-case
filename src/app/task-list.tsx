@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { createTask, deleteTask, updateTask } from "./actions";
+import { createTask, deleteTask, updateTask, updateDueDate } from "./actions";
 
-type Task = { id: string; name: string; createdAt: string };
+type Task = { id: string; name: string; createdAt: string; dueAt: string | null };
 type Result = { ok: true } | { ok: false; error: string };
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
@@ -11,6 +11,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
 });
 
 export function TaskList({ tasks }: { tasks: Task[] }) {
+  const [dateEditingId, setDateEditingId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState("");
@@ -47,6 +48,11 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
 
   return (
     <>
+      <div className="schedule-summary">
+        <div><span className="summary-number">{tasks.filter((task) => task.dueAt).length}</span><span>tasks scheduled</span></div>
+        <div><span className="summary-number">{tasks.filter((task) => !task.dueAt).length}</span><span>still open-ended</span></div>
+        <p>A date is a plan.<br />You can always change it.</p>
+      </div>
       <section className="card" aria-label="Task list" aria-busy={pending}>
         <form className="add-form" ref={addForm} onSubmit={add}>
           <label htmlFor="task-name">What&apos;s next?</label>
@@ -57,7 +63,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
         </form>
         <div className="list-heading">
           <h2>Your tasks <span className="count">{tasks.length}</span></h2>
-          <span className="list-hint">Newest first</span>
+          <span className="list-hint">Your calendar, one task at a time</span>
         </div>
         {error && <p className="error-message" role="alert">{error}</p>}
         {tasks.length === 0 ? (
@@ -85,6 +91,27 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
                       <h3>{task.name}</h3>
                       <time dateTime={task.createdAt} title={task.createdAt}>Created {dateFormat.format(new Date(task.createdAt))}</time>
                     </div>
+                    <div className="task-controls">
+                      {dateEditingId === task.id ? (
+                        <form className="date-editor" onSubmit={(event) => {
+                          event.preventDefault();
+                          const value = String(new FormData(event.currentTarget).get("dueAt") ?? "");
+                          run(() => updateDueDate(task.id, value), () => setDateEditingId(null), "Due date saved.");
+                        }}>
+                          <label htmlFor={`due-${task.id}`}>Due date</label>
+                          <input id={`due-${task.id}`} aria-label={`Due date for ${task.name}`} type="date" name="dueAt" defaultValue={task.dueAt?.slice(0, 10) ?? ""} disabled={pending} autoFocus />
+                          <div className="date-buttons">
+                            <button className="primary small" disabled={pending} type="submit">Save date</button>
+                            <button className="quiet" disabled={pending} type="button" onClick={() => run(() => updateDueDate(task.id, ""), () => setDateEditingId(null), "Due date cleared.")}>Clear</button>
+                            <button className="quiet" disabled={pending} type="button" onClick={() => setDateEditingId(null)}>Cancel</button>
+                          </div>
+                        </form>
+                      ) : (
+                        <button className={`due-chip ${task.dueAt ? "scheduled" : "unscheduled"}`} disabled={pending} aria-label={`Change due date for ${task.name}`} onClick={() => { setDateEditingId(task.id); setEditingId(null); setDeletingId(null); }}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" /><path d="M7 3v5m10-5v5M3 11h18" /></svg>
+                          {task.dueAt ? `Due ${dateFormat.format(new Date(task.dueAt))}` : "Set due date"}
+                        </button>
+                      )}
                     <div className="row-actions">
                       {deletingId === task.id ? (
                         <>
@@ -94,10 +121,11 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
                         </>
                       ) : (
                         <>
-                          <button className="quiet" aria-label={`Edit ${task.name}`} disabled={pending} onClick={() => { setEditingId(task.id); setDeletingId(null); setError(""); }}>Edit</button>
-                          <button className="quiet delete" aria-label={`Delete ${task.name}`} disabled={pending} onClick={() => { setDeletingId(task.id); setEditingId(null); setError(""); }}>Delete</button>
+                          <button className="quiet" aria-label={`Edit ${task.name}`} disabled={pending} onClick={() => { setEditingId(task.id); setDateEditingId(null); setDeletingId(null); setError(""); }}>Edit</button>
+                          <button className="quiet delete" aria-label={`Delete ${task.name}`} disabled={pending} onClick={() => { setDeletingId(task.id); setDateEditingId(null); setEditingId(null); setError(""); }}>Delete</button>
                         </>
                       )}
+                    </div>
                     </div>
                   </>
                 )}

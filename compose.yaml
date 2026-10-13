@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: forkdb_tasks
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - task_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d forkdb_tasks"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  task_data:

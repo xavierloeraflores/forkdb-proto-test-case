@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { createTask, deleteTask, updateTask, updateDueDate, setTaskPriority, setTaskCompleted } from "./actions";
+import { createTask, deleteTask, updateTask, updateDueDate, setTaskPriority, setTaskCompleted, updateCategory } from "./actions";
 
-type Task = { id: string; name: string; createdAt: string; dueAt: string | null; priority: "LOW" | "MEDIUM" | "HIGH"; completed: boolean };
+import { categories } from "@/lib/categories";
+
+type Task = { id: string; name: string; createdAt: string; dueAt: string | null; priority: "LOW" | "MEDIUM" | "HIGH"; completed: boolean; category: string };
 const priorityLabels = { LOW: "Low", MEDIUM: "Medium", HIGH: "High" };
 
 type Result = { ok: true } | { ok: false; error: string };
@@ -39,7 +41,8 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
   function add(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const name = String(new FormData(event.currentTarget).get("name") ?? "");
-    run(() => createTask(name), () => { addForm.current?.reset(); }, "Task added.");
+    const category = String(new FormData(event.currentTarget).get("category") ?? "Personal");
+    run(() => createTask(name, category), () => { addForm.current?.reset(); }, "Task added.");
   }
 
   function save(event: FormEvent<HTMLFormElement>, id: string) {
@@ -62,6 +65,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
           <label htmlFor="task-name">What&apos;s next?</label>
           <div className="form-line">
             <input id="task-name" name="name" placeholder="Add a task…" required maxLength={200} disabled={pending} autoComplete="off" />
+            <select name="category" aria-label="New task category" defaultValue="Personal" disabled={pending}>{categories.map((category) => <option key={category}>{category}</option>)}</select>
             <button className="primary" disabled={pending} type="submit"><span aria-hidden="true">+</span> Add task</button>
           </div>
         </form>
@@ -96,6 +100,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
                     <div className="task-content">
                       <h3>{task.name}</h3>
                       <span className={`priority-badge priority-${task.priority.toLowerCase()}`}>{priorityLabels[task.priority]}</span>
+                      <span className={`category-chip category-${task.category.toLowerCase()}`}>{task.category}</span>
                       <time dateTime={task.createdAt} title={task.createdAt}>Created {dateFormat.format(new Date(task.createdAt))}</time>
                     </div>
                     </div>
@@ -103,6 +108,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
 <select className="priority-select" aria-label={`Priority for ${task.name}`} value={task.priority} disabled={pending} onChange={(event) => { const priority = event.currentTarget.value as Task["priority"]; run(() => setTaskPriority(task.id, priority), () => {}, "Priority saved."); }}>
                         <option value="LOW">Low</option><option value="MEDIUM">Medium</option><option value="HIGH">High</option>
                       </select>
+<select aria-label={`Category for ${task.name}`} value={task.category} disabled={pending} onChange={(event) => { const category = event.currentTarget.value; run(() => updateCategory(task.id, category), () => {}, "Category saved."); }}>{categories.map((category) => <option key={category}>{category}</option>)}</select>
 
                       {dateEditingId === task.id ? (
                         <form className="date-editor" onSubmit={(event) => {

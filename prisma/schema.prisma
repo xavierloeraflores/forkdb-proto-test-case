@@ -15,6 +15,7 @@ model Task {
 
   priority  Priority @default(MEDIUM)
   completed Boolean  @default(false)
+  category  String   @default("Personal") @db.VarChar(32)
 
   @@map("tasks")
 }

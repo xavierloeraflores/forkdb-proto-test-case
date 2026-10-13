@@ -1,0 +1,566 @@
+{
+  "capturedAt": "2026-10-13T02:48:08.299Z",
+  "baselineMatch": true,
+  "snapshots": [
+    {
+      "variant": "due-dates",
+      "branch": "feat/forkdb-demo-due-dates",
+      "commit": "b313e62d1d07601179279f1d20bbc03369bc1d45",
+      "database": "dbf_dd653853f244316e7fe5976421a28f97",
+      "port": 3101,
+      "schema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Task {\n  id        String   @id @default(uuid()) @db.Uuid\n  name      String   @db.VarChar(200)\n  dueAt     DateTime? @db.Timestamptz(3)\n  createdAt DateTime @default(now()) @db.Timestamptz(3)\n\n  @@map(\"tasks\")\n}\n",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "uuid",
+          "udt_name": "uuid",
+          "is_nullable": "NO",
+          "column_default": null
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "udt_name": "varchar",
+          "is_nullable": "NO",
+          "column_default": null
+        },
+        {
+          "column_name": "createdAt",
+          "data_type": "timestamp with time zone",
+          "udt_name": "timestamptz",
+          "is_nullable": "NO",
+          "column_default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "column_name": "dueAt",
+          "data_type": "timestamp with time zone",
+          "udt_name": "timestamptz",
+          "is_nullable": "YES",
+          "column_default": null
+        }
+      ],
+      "migrations": [
+        {
+          "migration_name": "20261013022053_init",
+          "finished_at": "2026-10-13T02:20:53.299Z"
+        },
+        {
+          "migration_name": "20261013030000_add_due_at",
+          "finished_at": "2026-10-13T02:40:29.513Z"
+        }
+      ],
+      "rows": [
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000015",
+          "name": "Write down three project ideas",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-20T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000014",
+          "name": "Pick a recipe to try",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-26T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000013",
+          "name": "Update the monthly budget",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-22T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000012",
+          "name": "Call a friend",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-19T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000011",
+          "name": "Schedule a dentist appointment",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": null
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000010",
+          "name": "Prepare lunch for tomorrow",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-14T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000009",
+          "name": "Organize the downloads folder",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-13T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000008",
+          "name": "Review the project README",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-12T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000007",
+          "name": "Back up important files",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-26T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000006",
+          "name": "Clean the desk",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": null
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000005",
+          "name": "Go for a walk",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-19T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000004",
+          "name": "Read a chapter of a book",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-16T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000003",
+          "name": "Water the plants",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-14T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000002",
+          "name": "Buy groceries",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": "2026-10-13T00:00:00.000Z"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000001",
+          "name": "Plan the week",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "dueAt": null
+        }
+      ]
+    },
+    {
+      "variant": "priority",
+      "branch": "feat/forkdb-demo-priority",
+      "commit": "388e1988ccbb63b811e72d422a0d967c7e9b60b5",
+      "database": "dbf_83e7ada09fe80c2a9c929619174c067b",
+      "port": 3102,
+      "schema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Task {\n  id        String   @id @default(uuid()) @db.Uuid\n  name      String   @db.VarChar(200)\n  priority  Priority @default(MEDIUM)\n  createdAt DateTime @default(now()) @db.Timestamptz(3)\n\n  @@map(\"tasks\")\n}\n\nenum Priority {\n  LOW\n  MEDIUM\n  HIGH\n}\n",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "uuid",
+          "udt_name": "uuid",
+          "is_nullable": "NO",
+          "column_default": null
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "udt_name": "varchar",
+          "is_nullable": "NO",
+          "column_default": null
+        },
+        {
+          "column_name": "createdAt",
+          "data_type": "timestamp with time zone",
+          "udt_name": "timestamptz",
+          "is_nullable": "NO",
+          "column_default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "column_name": "priority",
+          "data_type": "USER-DEFINED",
+          "udt_name": "Priority",
+          "is_nullable": "NO",
+          "column_default": "'MEDIUM'::\"Priority\""
+        }
+      ],
+      "migrations": [
+        {
+          "migration_name": "20261013022053_init",
+          "finished_at": "2026-10-13T02:20:53.299Z"
+        },
+        {
+          "migration_name": "20261013033000_add_task_priority",
+          "finished_at": "2026-10-13T02:40:12.311Z"
+        }
+      ],
+      "rows": [
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000015",
+          "name": "Write down three project ideas",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "LOW"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000014",
+          "name": "Pick a recipe to try",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "MEDIUM"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000013",
+          "name": "Update the monthly budget",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "LOW"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000012",
+          "name": "Call a friend",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "HIGH"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000011",
+          "name": "Schedule a dentist appointment",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "MEDIUM"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000010",
+          "name": "Prepare lunch for tomorrow",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "LOW"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000009",
+          "name": "Organize the downloads folder",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "HIGH"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000008",
+          "name": "Review the project README",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "MEDIUM"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000007",
+          "name": "Back up important files",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "LOW"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000006",
+          "name": "Clean the desk",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "HIGH"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000005",
+          "name": "Go for a walk",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "MEDIUM"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000004",
+          "name": "Read a chapter of a book",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "LOW"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000003",
+          "name": "Water the plants",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "HIGH"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000002",
+          "name": "Buy groceries",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "MEDIUM"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000001",
+          "name": "Plan the week",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "priority": "LOW"
+        }
+      ]
+    },
+    {
+      "variant": "completion",
+      "branch": "feat/forkdb-demo-completion",
+      "commit": "1073b21959f9fa67a0d6ec059eddbb41cbd3af85",
+      "database": "dbf_da5ad13027ae3dc5a152650a1d7f2c3a",
+      "port": 3103,
+      "schema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Task {\n  id        String   @id @default(uuid()) @db.Uuid\n  name      String   @db.VarChar(200)\n  createdAt DateTime @default(now()) @db.Timestamptz(3)\n  completed Boolean  @default(false)\n\n  @@map(\"tasks\")\n}\n",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "uuid",
+          "udt_name": "uuid",
+          "is_nullable": "NO",
+          "column_default": null
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "udt_name": "varchar",
+          "is_nullable": "NO",
+          "column_default": null
+        },
+        {
+          "column_name": "createdAt",
+          "data_type": "timestamp with time zone",
+          "udt_name": "timestamptz",
+          "is_nullable": "NO",
+          "column_default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "column_name": "completed",
+          "data_type": "boolean",
+          "udt_name": "bool",
+          "is_nullable": "NO",
+          "column_default": "false"
+        }
+      ],
+      "migrations": [
+        {
+          "migration_name": "20261013022053_init",
+          "finished_at": "2026-10-13T02:20:53.299Z"
+        },
+        {
+          "migration_name": "20261013030000_add_task_completed",
+          "finished_at": "2026-10-13T02:40:32.937Z"
+        }
+      ],
+      "rows": [
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000015",
+          "name": "Write down three project ideas",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": true
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000014",
+          "name": "Pick a recipe to try",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": true
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000013",
+          "name": "Update the monthly budget",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": true
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000012",
+          "name": "Call a friend",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000011",
+          "name": "Schedule a dentist appointment",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000010",
+          "name": "Prepare lunch for tomorrow",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000009",
+          "name": "Organize the downloads folder",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000008",
+          "name": "Review the project README",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000007",
+          "name": "Back up important files",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000006",
+          "name": "Clean the desk",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000005",
+          "name": "Go for a walk",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000004",
+          "name": "Read a chapter of a book",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000003",
+          "name": "Water the plants",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000002",
+          "name": "Buy groceries",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000001",
+          "name": "Plan the week",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "completed": false
+        }
+      ]
+    },
+    {
+      "variant": "categories",
+      "branch": "feat/forkdb-demo-categories",
+      "commit": "9b9dda159d7d037b089adaafa1bd278745a670e2",
+      "database": "dbf_756bbfe50c83e0ad96f48d1034fc191c",
+      "port": 3104,
+      "schema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Task {\n  id        String   @id @default(uuid()) @db.Uuid\n  name      String   @db.VarChar(200)\n  category  String   @default(\"Personal\") @db.VarChar(32)\n  createdAt DateTime @default(now()) @db.Timestamptz(3)\n\n  @@map(\"tasks\")\n}\n",
+      "columns": [
+        {
+          "column_name": "id",
+          "data_type": "uuid",
+          "udt_name": "uuid",
+          "is_nullable": "NO",
+          "column_default": null
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "udt_name": "varchar",
+          "is_nullable": "NO",
+          "column_default": null
+        },
+        {
+          "column_name": "createdAt",
+          "data_type": "timestamp with time zone",
+          "udt_name": "timestamptz",
+          "is_nullable": "NO",
+          "column_default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "column_name": "category",
+          "data_type": "character varying",
+          "udt_name": "varchar",
+          "is_nullable": "NO",
+          "column_default": "'Personal'::character varying"
+        }
+      ],
+      "migrations": [
+        {
+          "migration_name": "20261013022053_init",
+          "finished_at": "2026-10-13T02:20:53.299Z"
+        },
+        {
+          "migration_name": "20261013030000_add_task_category",
+          "finished_at": "2026-10-13T02:40:44.620Z"
+        }
+      ],
+      "rows": [
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000015",
+          "name": "Write down three project ideas",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Learning"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000014",
+          "name": "Pick a recipe to try",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Learning"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000013",
+          "name": "Update the monthly budget",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Personal"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000012",
+          "name": "Call a friend",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Personal"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000011",
+          "name": "Schedule a dentist appointment",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Wellness"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000010",
+          "name": "Prepare lunch for tomorrow",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Home"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000009",
+          "name": "Organize the downloads folder",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Work"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000008",
+          "name": "Review the project README",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Work"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000007",
+          "name": "Back up important files",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Work"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000006",
+          "name": "Clean the desk",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Home"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000005",
+          "name": "Go for a walk",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Wellness"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000004",
+          "name": "Read a chapter of a book",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Learning"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000003",
+          "name": "Water the plants",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Home"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000002",
+          "name": "Buy groceries",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Home"
+        },
+        {
+          "id": "d769a3c0-30fd-4b7b-8d95-000000000001",
+          "name": "Plan the week",
+          "createdAt": "2026-10-13T02:25:34.107Z",
+          "category": "Personal"
+        }
+      ]
+    }
+  ]
+}

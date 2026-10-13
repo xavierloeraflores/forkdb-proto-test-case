@@ -1,0 +1,20 @@
+[project]
+name = "forkdb-proto-test-case"
+default_branch = "main"
+env_files = [".env"]
+protected_branches = [
+    "main",
+    "master",
+    "production",
+    "prod",
+]
+
+[[databases]]
+name = "primary"
+engine = "postgres"
+provider = "local"
+connection_env = "DATABASE_URL"
+strategy = "full"
+seed = []
+
+[databases.options]

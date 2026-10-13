@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ForkDB | Four live database forks</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #edf0f5; color: #182231; font: 14px system-ui, sans-serif; }
+    header { padding: 16px 24px; background: #172233; color: #fff; display: flex; gap: 20px; align-items: center; justify-content: space-between; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    p { margin: 0; color: #c9d5e6; }
+    button { color: #fff; border: 1px solid #65738a; border-radius: 6px; padding: 9px 14px; background: transparent; cursor: pointer; white-space: nowrap; }
+    main { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; padding: 12px; }
+    section { background: white; min-width: 0; border: 1px solid #ccd5e0; border-radius: 8px; overflow: hidden; }
+    .label { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 4px solid var(--color); padding: 10px 14px; }
+    h2 { margin: 0; font-size: 15px; }
+    a { color: #344963; text-underline-offset: 3px; }
+    iframe { display: block; width: 100%; height: calc((100vh - 220px) / 2); min-height: 360px; border: 0; border-top: 1px solid #e1e6ed; }
+    @media (max-width: 760px) { header { align-items: flex-start; } main { grid-template-columns: 1fr; } iframe { height: 540px; } }
+  </style>
+</head>
+<body>
+  <header><div><h1>Four worktrees. Four live databases.</h1><p>Each fork starts with the same 15 tasks and has its own schema change.</p></div><button type="button" onclick="document.querySelectorAll('iframe').forEach(frame => frame.src = frame.src)">Reload all four</button></header>
+  <main>
+    <section style="--color:#2563eb"><div class="label"><h2>Due dates</h2><a href="http://127.0.0.1:3101" target="_blank" rel="noopener">Open port 3101 ↗</a></div><iframe title="Due dates fork" src="http://127.0.0.1:3101"></iframe></section>
+    <section style="--color:#9333ea"><div class="label"><h2>Priority tags</h2><a href="http://127.0.0.1:3102" target="_blank" rel="noopener">Open port 3102 ↗</a></div><iframe title="Priority fork" src="http://127.0.0.1:3102"></iframe></section>
+    <section style="--color:#16a34a"><div class="label"><h2>Completion status</h2><a href="http://127.0.0.1:3103" target="_blank" rel="noopener">Open port 3103 ↗</a></div><iframe title="Completion fork" src="http://127.0.0.1:3103"></iframe></section>
+    <section style="--color:#ea580c"><div class="label"><h2>Category labels</h2><a href="http://127.0.0.1:3104" target="_blank" rel="noopener">Open port 3104 ↗</a></div><iframe title="Categories fork" src="http://127.0.0.1:3104"></iframe></section>
+  </main>
+</body>
+</html>

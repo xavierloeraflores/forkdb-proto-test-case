@@ -112,6 +112,21 @@ body { background: radial-gradient(ellipse at top right, #dbe9ff, transparent 55
   .summary-count { font-size: 25px; }
 }
 
+.progress-card { padding: 28px; margin-bottom: 24px; border-radius: 16px; color: #fff; background: #145c3b; }
+.progress-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.progress-label { color: #b7e6c9; font-size: 12px; font-weight: 600; }
+.progress-top p { margin: 8px 0 20px; font-size: 16px; }
+.progress-top strong { font-size: 32px; margin-right: 3px; }
+.progress-percent { font-size: 38px; letter-spacing: -1px; font-weight: 700; }
+progress { display: block; width: 100%; height: 9px; appearance: none; border: none; border-radius: 99px; overflow: hidden; background: #397655; }
+progress::-webkit-progress-bar { background: #397655; }
+progress::-webkit-progress-value { background: #adf0b9; border-radius: 99px; }
+progress::-moz-progress-bar { background: #adf0b9; }
+.progress-note { margin: 12px 0 0; color: #c4e6d1; font-size: 12px; }
+.task-main { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.completion-checkbox { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+.completed .task-content h3 { color: #749180; text-decoration: line-through; text-decoration-thickness: 1.5px; }
+
 .tasks li { align-items: flex-start; flex-direction: column; }
 .task-controls { flex-wrap: wrap; width: 100%; gap: 10px; }
 .task-controls > .row-actions { margin-left: auto; }

@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { createTask, deleteTask, updateTask, updateDueDate, setTaskPriority } from "./actions";
+import { createTask, deleteTask, updateTask, updateDueDate, setTaskPriority, setTaskCompleted } from "./actions";
 
-type Task = { id: string; name: string; createdAt: string; dueAt: string | null; priority: "LOW" | "MEDIUM" | "HIGH" };
+type Task = { id: string; name: string; createdAt: string; dueAt: string | null; priority: "LOW" | "MEDIUM" | "HIGH"; completed: boolean };
 const priorityLabels = { LOW: "Low", MEDIUM: "Medium", HIGH: "High" };
 
 type Result = { ok: true } | { ok: false; error: string };
@@ -51,6 +51,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
   return (
     <>
       <div className="schedule-summary">
+        <div><span className="summary-number">{tasks.filter((task) => task.completed).length} / {tasks.length}</span><span>tasks complete</span><progress value={tasks.filter((task) => task.completed).length} max={tasks.length || 1} aria-label="Completed tasks" /></div>
         <div><span className="summary-number">{tasks.filter((task) => task.priority === "HIGH").length}</span><span>high priority</span></div>
         <div><span className="summary-number">{tasks.filter((task) => task.dueAt).length}</span><span>tasks scheduled</span></div>
         <div><span className="summary-number">{tasks.filter((task) => !task.dueAt).length}</span><span>still open-ended</span></div>
@@ -78,7 +79,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
         ) : (
           <ul className="tasks">
             {tasks.map((task) => (
-              <li key={task.id}>
+              <li key={task.id} className={task.completed ? "completed" : undefined}>
                 {editingId === task.id ? (
                   <form className="edit-form" onSubmit={(event) => save(event, task.id)}>
                     <label className="sr-only" htmlFor={`edit-${task.id}`}>Task name</label>
@@ -90,10 +91,13 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
                   </form>
                 ) : (
                   <>
+                    <div className="task-main">
+                      <input className="completion-checkbox" type="checkbox" checked={task.completed} disabled={pending} aria-label={`Mark ${task.name} ${task.completed ? "incomplete" : "complete"}`} onChange={(event) => { const completed = event.currentTarget.checked; run(() => setTaskCompleted(task.id, completed), () => {}, completed ? "Task completed." : "Task marked incomplete."); }} />
                     <div className="task-content">
                       <h3>{task.name}</h3>
                       <span className={`priority-badge priority-${task.priority.toLowerCase()}`}>{priorityLabels[task.priority]}</span>
                       <time dateTime={task.createdAt} title={task.createdAt}>Created {dateFormat.format(new Date(task.createdAt))}</time>
+                    </div>
                     </div>
                     <div className="task-controls">
 <select className="priority-select" aria-label={`Priority for ${task.name}`} value={task.priority} disabled={pending} onChange={(event) => { const priority = event.currentTarget.value as Task["priority"]; run(() => setTaskPriority(task.id, priority), () => {}, "Priority saved."); }}>

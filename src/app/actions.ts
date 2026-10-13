@@ -64,3 +64,9 @@ export async function setTaskPriority(id: string, priority: Priority): Promise<R
   if (!Object.values(Priority).includes(priority)) return { ok: false, error: "Choose Low, Medium, or High priority." };
   return mutate(() => getPrisma().task.update({ where: { id }, data: { priority } }));
 }
+
+export async function setTaskCompleted(id: string, completed: boolean): Promise<Result> {
+  if (!validId(id)) return { ok: false, error: "Invalid task ID." };
+  if (typeof completed !== "boolean") return { ok: false, error: "Invalid completion state." };
+  return mutate(() => getPrisma().task.update({ where: { id }, data: { completed } }));
+}

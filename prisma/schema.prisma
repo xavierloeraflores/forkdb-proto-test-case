@@ -13,5 +13,13 @@ model Task {
   dueAt     DateTime? @db.Timestamptz(3)
   createdAt DateTime @default(now()) @db.Timestamptz(3)
 
+  priority  Priority @default(MEDIUM)
+
   @@map("tasks")
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
 }

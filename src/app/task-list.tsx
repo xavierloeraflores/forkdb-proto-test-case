@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { createTask, deleteTask, updateTask, updateDueDate } from "./actions";
+import { createTask, deleteTask, updateTask, updateDueDate, setTaskPriority } from "./actions";
 
-type Task = { id: string; name: string; createdAt: string; dueAt: string | null };
+type Task = { id: string; name: string; createdAt: string; dueAt: string | null; priority: "LOW" | "MEDIUM" | "HIGH" };
+const priorityLabels = { LOW: "Low", MEDIUM: "Medium", HIGH: "High" };
+
 type Result = { ok: true } | { ok: false; error: string };
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
@@ -49,9 +51,10 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
   return (
     <>
       <div className="schedule-summary">
+        <div><span className="summary-number">{tasks.filter((task) => task.priority === "HIGH").length}</span><span>high priority</span></div>
         <div><span className="summary-number">{tasks.filter((task) => task.dueAt).length}</span><span>tasks scheduled</span></div>
         <div><span className="summary-number">{tasks.filter((task) => !task.dueAt).length}</span><span>still open-ended</span></div>
-        <p>A date is a plan.<br />You can always change it.</p>
+
       </div>
       <section className="card" aria-label="Task list" aria-busy={pending}>
         <form className="add-form" ref={addForm} onSubmit={add}>
@@ -63,7 +66,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
         </form>
         <div className="list-heading">
           <h2>Your tasks <span className="count">{tasks.length}</span></h2>
-          <span className="list-hint">Your calendar, one task at a time</span>
+          <span className="list-hint">Newest first</span>
         </div>
         {error && <p className="error-message" role="alert">{error}</p>}
         {tasks.length === 0 ? (
@@ -89,9 +92,14 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
                   <>
                     <div className="task-content">
                       <h3>{task.name}</h3>
+                      <span className={`priority-badge priority-${task.priority.toLowerCase()}`}>{priorityLabels[task.priority]}</span>
                       <time dateTime={task.createdAt} title={task.createdAt}>Created {dateFormat.format(new Date(task.createdAt))}</time>
                     </div>
                     <div className="task-controls">
+<select className="priority-select" aria-label={`Priority for ${task.name}`} value={task.priority} disabled={pending} onChange={(event) => { const priority = event.currentTarget.value as Task["priority"]; run(() => setTaskPriority(task.id, priority), () => {}, "Priority saved."); }}>
+                        <option value="LOW">Low</option><option value="MEDIUM">Medium</option><option value="HIGH">High</option>
+                      </select>
+
                       {dateEditingId === task.id ? (
                         <form className="date-editor" onSubmit={(event) => {
                           event.preventDefault();

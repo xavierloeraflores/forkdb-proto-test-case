@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Due dates fork | ForkDB",
+  title: "Tasks | ForkDB",
   description: "Plan your tasks with editable due dates.",
 };
 
@@ -12,9 +12,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <main className="workspace">
           <header className="page-header">
-            <span className="eyebrow">FORKDB / 01</span>
-            <h1>Due dates fork</h1>
-            <p>Give every task its day. Set a deadline, adjust your plans, keep moving.</p>
+            <span className="eyebrow">FORKDB / MERGED DEMOS</span>
+            <h1>Tasks</h1>
+            <p>Due dates, priorities, completion, and categories in one task list.</p>
           </header>
           {children}
         </main>

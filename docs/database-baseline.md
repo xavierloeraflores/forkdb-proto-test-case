@@ -91,7 +91,9 @@ The following contents were read directly from all four databases on October 12,
 
 [Complete machine-readable rows, schema metadata, migration names, and branch commits](data/fork-snapshots.json). Connection URLs and credentials are excluded.
 
-![All four independent ForkDB apps running simultaneously](assets/four-forks-running.jpg)
+![Task data from all four running ForkDB apps: due dates, priorities, completion marks, and categories](assets/four-forks-running.jpg)
+
+Each live panel is scrolled to its task list so the same copied task names and each fork's distinct field values are visible together. The labels identify the added database column in each fork.
 
 The comparison page embeds the four live app servers at [127.0.0.1:3100](http://127.0.0.1:3100). Its [HTML source](four-forks.html) can be served with `python3 -m http.server 3100 --bind 127.0.0.1 --directory docs` and opened at `/four-forks.html` while the four app servers are running.
 

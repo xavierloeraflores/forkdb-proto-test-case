@@ -44,3 +44,9 @@ export async function deleteTask(id: string): Promise<Result> {
   if (!validId(id)) return { ok: false, error: "Invalid task ID." };
   return mutate(() => getPrisma().task.delete({ where: { id } }));
 }
+
+export async function setTaskCompleted(id: string, completed: boolean): Promise<Result> {
+  if (!validId(id)) return { ok: false, error: "Invalid task ID." };
+  if (typeof completed !== "boolean") return { ok: false, error: "Invalid completion state." };
+  return mutate(() => getPrisma().task.update({ where: { id }, data: { completed } }));
+}

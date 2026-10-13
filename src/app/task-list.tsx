@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { createTask, deleteTask, updateTask } from "./actions";
+import { createTask, deleteTask, updateTask, setTaskCompleted } from "./actions";
 
-type Task = { id: string; name: string; createdAt: string };
+type Task = { id: string; name: string; createdAt: string; completed: boolean };
 type Result = { ok: true } | { ok: false; error: string };
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
@@ -17,6 +17,8 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
   const [notice, setNotice] = useState("");
   const [pending, startTransition] = useTransition();
   const addForm = useRef<HTMLFormElement>(null);
+  const completedCount = tasks.filter((task) => task.completed).length;
+  const progress = tasks.length ? Math.round(completedCount / tasks.length * 100) : 0;
 
   function run(operation: () => Promise<Result>, success: () => void, message: string) {
     setError("");
@@ -47,6 +49,14 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
 
   return (
     <>
+      <section className="progress-card" aria-label="Completion progress">
+        <div className="progress-top">
+          <div><span className="progress-label">Your progress</span><p><strong>{completedCount}</strong> of {tasks.length} tasks complete</p></div>
+          <span className="progress-percent">{progress}%</span>
+        </div>
+        <progress value={completedCount} max={tasks.length || 1} aria-label={`${completedCount} of ${tasks.length} tasks complete`} />
+        <p className="progress-note">{tasks.length === 0 ? "Add a task to get started." : completedCount === tasks.length ? "Everything is checked off. Nicely done." : `${tasks.length - completedCount} tasks left to check off.`}</p>
+      </section>
       <section className="card" aria-label="Task list" aria-busy={pending}>
         <form className="add-form" ref={addForm} onSubmit={add}>
           <label htmlFor="task-name">What&apos;s next?</label>
@@ -69,7 +79,7 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
         ) : (
           <ul className="tasks">
             {tasks.map((task) => (
-              <li key={task.id}>
+              <li key={task.id} className={task.completed ? "completed" : undefined}>
                 {editingId === task.id ? (
                   <form className="edit-form" onSubmit={(event) => save(event, task.id)}>
                     <label className="sr-only" htmlFor={`edit-${task.id}`}>Task name</label>
@@ -81,9 +91,15 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
                   </form>
                 ) : (
                   <>
+                    <div className="task-main">
+                    <input className="completion-checkbox" type="checkbox" checked={task.completed} disabled={pending} aria-label={`Mark ${task.name} ${task.completed ? "incomplete" : "complete"}`} onChange={(event) => {
+                      const checked = event.currentTarget.checked;
+                      run(() => setTaskCompleted(task.id, checked), () => {}, checked ? "Task completed." : "Task marked incomplete.");
+                    }} />
                     <div className="task-content">
                       <h3>{task.name}</h3>
                       <time dateTime={task.createdAt} title={task.createdAt}>Created {dateFormat.format(new Date(task.createdAt))}</time>
+                    </div>
                     </div>
                     <div className="row-actions">
                       {deletingId === task.id ? (

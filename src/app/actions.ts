@@ -1,5 +1,6 @@
 "use server";
 
+import { isCategory } from "@/lib/categories";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@/generated/prisma/client";
 import { getPrisma } from "@/lib/prisma";
@@ -29,9 +30,10 @@ async function mutate(operation: () => Promise<unknown>): Promise<Result> {
   return { ok: true };
 }
 
-export async function createTask(name: string): Promise<Result> {
+export async function createTask(name: string, category: string): Promise<Result> {
   if (!validName(name)) return { ok: false, error: "Enter a task name between 1 and 200 characters." };
-  return mutate(() => getPrisma().task.create({ data: { name: name.trim() } }));
+  if (!isCategory(category)) return { ok: false, error: "Choose a valid category." };
+  return mutate(() => getPrisma().task.create({ data: { name: name.trim(), category } }));
 }
 
 export async function updateTask(id: string, name: string): Promise<Result> {
@@ -43,4 +45,10 @@ export async function updateTask(id: string, name: string): Promise<Result> {
 export async function deleteTask(id: string): Promise<Result> {
   if (!validId(id)) return { ok: false, error: "Invalid task ID." };
   return mutate(() => getPrisma().task.delete({ where: { id } }));
+}
+
+export async function updateCategory(id: string, category: string): Promise<Result> {
+  if (!validId(id)) return { ok: false, error: "Invalid task ID." };
+  if (!isCategory(category)) return { ok: false, error: "Choose a valid category." };
+  return mutate(() => getPrisma().task.update({ where: { id }, data: { category } }));
 }

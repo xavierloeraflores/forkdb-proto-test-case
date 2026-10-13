@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { createTask, deleteTask, updateTask } from "./actions";
+import { createTask, deleteTask, updateTask, updateCategory } from "./actions";
 
-type Task = { id: string; name: string; createdAt: string };
+import { categories } from "@/lib/categories";
+
+type Task = { id: string; name: string; createdAt: string; category: string };
 type Result = { ok: true } | { ok: false; error: string };
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
@@ -36,7 +38,8 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
   function add(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const name = String(new FormData(event.currentTarget).get("name") ?? "");
-    run(() => createTask(name), () => { addForm.current?.reset(); }, "Task added.");
+    const category = String(new FormData(event.currentTarget).get("category") ?? "Personal");
+    run(() => createTask(name, category), () => { addForm.current?.reset(); }, "Task added.");
   }
 
   function save(event: FormEvent<HTMLFormElement>, id: string) {
@@ -52,12 +55,13 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
           <label htmlFor="task-name">What&apos;s next?</label>
           <div className="form-line">
             <input id="task-name" name="name" placeholder="Add a task…" required maxLength={200} disabled={pending} autoComplete="off" />
+            <select name="category" aria-label="New task category" defaultValue="Personal" disabled={pending}>{categories.map((category) => <option key={category}>{category}</option>)}</select>
             <button className="primary" disabled={pending} type="submit"><span aria-hidden="true">+</span> Add task</button>
           </div>
         </form>
         <div className="list-heading">
           <h2>Your tasks <span className="count">{tasks.length}</span></h2>
-          <span className="list-hint">Newest first</span>
+          <span className="list-hint">Choose a category to save it</span>
         </div>
         {error && <p className="error-message" role="alert">{error}</p>}
         {tasks.length === 0 ? (
@@ -83,9 +87,11 @@ export function TaskList({ tasks }: { tasks: Task[] }) {
                   <>
                     <div className="task-content">
                       <h3>{task.name}</h3>
+                      <span className={`category-chip category-${task.category.toLowerCase()}`}>{task.category}</span>
                       <time dateTime={task.createdAt} title={task.createdAt}>Created {dateFormat.format(new Date(task.createdAt))}</time>
                     </div>
                     <div className="row-actions">
+                      <select aria-label={`Category for ${task.name}`} value={task.category} disabled={pending} onChange={(event) => { const category = event.currentTarget.value; run(() => updateCategory(task.id, category), () => {}, "Category saved."); }}>{categories.map((category) => <option key={category}>{category}</option>)}</select>
                       {deletingId === task.id ? (
                         <>
                           <span className="delete-prompt">Delete task?</span>
